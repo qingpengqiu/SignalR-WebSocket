@@ -14,7 +14,7 @@
     <script>
         var chat;
         $(function () {
-            // Created proxy            
+            // Created proxy,此处要特别注意，Hub类的首字母是大写MyChat，但前端使用时，首字母要小写           
             chat = $.connection.myChat;
             // Assign a function to be called by the server        
             chat.client.addMessage = onAddMessage;
