@@ -1,0 +1,45 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SignalRClient.aspx.cs" Inherits="SignalRDemo.SignalRClient" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="/Scripts/jquery-1.10.2.js"></script>
+    <script src="/Scripts/jquery.signalR-2.2.0.js"></script>
+    <script src='/signalr/hubs'></script>
+    <title></title>
+</head>
+<body>
+    <script>
+        var chat;
+        $(function () {
+            // Created proxy            
+            chat = $.connection.myChat;
+            // Assign a function to be called by the server        
+            chat.client.addMessage = onAddMessage;
+            // Register a function with the button click               
+            $("#broadcast").click(onBroadcast);
+            // Start the connection        
+            $.connection.hub.start().done(function (a) {
+                console.log("成功");
+                console.log(a);
+            });
+        });
+        function onAddMessage(message) {
+            // Add the message to the list    
+            $('#messages').append('<li>' + message + '</li>');
+        };
+        function onBroadcast() {        
+            chat.server.send($('#message').val());
+        }
+    </script>
+    <form id="form1" runat="server">
+    <div>
+        <input type="text" id="message" />
+        <input type="button" id="broadcast" value="broadcast" />
+        <ul id="messages"></ul>
+    </div>
+    </form>
+</body>
+</html>
